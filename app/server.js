@@ -27,13 +27,19 @@ const cartPage = `<!doctype html>
 <body><main id="cart" data-pending="0"><h1>Cart</h1><p>Items: <strong id="cart-badge">0</strong></p>
 <button id="add-item" type="button">Add field notebook</button></main><script>
 let pending = 0;
+let nextRequest = 0;
+let latestPainted = 0;
 async function addItem() {
+  const requestId = ++nextRequest;
   pending += 1;
   document.querySelector('#cart').dataset.pending = String(pending);
   try {
     const response = await fetch('/api/cart/add', { method: 'POST' });
     const data = await response.json();
-    document.querySelector('#cart-badge').textContent = String(data.count);
+    if (requestId > latestPainted) {
+      latestPainted = requestId;
+      document.querySelector('#cart-badge').textContent = String(data.count);
+    }
   } finally {
     pending -= 1;
     document.querySelector('#cart').dataset.pending = String(pending);
