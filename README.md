@@ -18,10 +18,10 @@ Rule: a test that both passes and fails across five runs is unstable; the gate b
 > release-gate@1.0.0 gate
 > node src/run-gate.js
 
-Run 1/5: passed
-Run 2/5: failed
-Run 3/5: passed
-Run 4/5: failed
+Run 1/5: failed
+Run 2/5: passed
+Run 3/5: failed
+Run 4/5: passed
 Run 5/5: failed
 BLOCKED
 Reason: flake rate 0.2500 (1 unstable / 4 total) exceeds threshold 0.0200

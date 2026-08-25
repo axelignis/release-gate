@@ -6,6 +6,7 @@ const crypto = require('node:crypto');
 
 const port = Number(process.env.PORT || 4173);
 let cartCount = 0;
+let inventoryCheckNumber = 0;
 
 const loginPage = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Agent Shop — Login</title></head>
@@ -44,7 +45,10 @@ document.querySelector('#add-item').addEventListener('click', addItem);
 
 function inventoryCheck(snapshot) {
   return new Promise((resolve, reject) => {
-    const iterations = snapshot % 2 === 0 ? 44000 : 45000;
+    inventoryCheckNumber += 1;
+    const cyclePosition = inventoryCheckNumber % 6;
+    const requiresFullVerification = cyclePosition === 2 || cyclePosition === 0;
+    const iterations = requiresFullVerification ? 120000 : 12000;
     crypto.pbkdf2(`field-notebook-${snapshot}`, 'agent-shop-inventory', iterations, 32, 'sha256', (error) => {
       if (error) reject(error); else resolve();
     });
