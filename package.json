@@ -1,0 +1,20 @@
+{
+  "name": "release-gate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A deterministic release gate for repeated Playwright runs",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node app/server.js",
+    "test": "node --test",
+    "test:e2e": "playwright test",
+    "gate": "node src/run-gate.js",
+    "gate:fixtures": "node src/cli.js"
+  },
+  "dependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

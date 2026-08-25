@@ -1,0 +1,1 @@
+{"run_id":2,"tests":[{"id":"login accepts","status":"passed"},{"id":"login rejects","status":"passed"},{"id":"cart adds one","status":"passed"},{"id":"cart concurrent","status":"failed"}]}
