@@ -8,7 +8,7 @@ Requires Node.js 20 or newer.
 
 The Agent Shop fixture in `app/` was written by an agent. It is a dependency-free, in-memory Node HTTP app with only login and cart flows; its cart client contains a real stale-response race during concurrent additions.
 
-Blocked PR: [agent-cart-race → main](https://github.com/axelignis/release-gate2/pull/1)
+Blocked PR: [agent-cart-race → main](https://github.com/axelignis/release-gate/pull/1)
 
 Rule: a test that both passes and fails across five runs is unstable; the gate blocks when unstable tests / total tests exceeds `0.0200`, while a test that fails all five runs is broken and blocks directly.
 
