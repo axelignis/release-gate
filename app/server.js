@@ -6,6 +6,7 @@ const crypto = require('node:crypto');
 
 const port = Number(process.env.PORT || 4173);
 let cartCount = 0;
+let inventoryCheckNumber = 0;
 
 const loginPage = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Agent Shop — Login</title></head>
@@ -27,19 +28,13 @@ const cartPage = `<!doctype html>
 <body><main id="cart" data-pending="0"><h1>Cart</h1><p>Items: <strong id="cart-badge">0</strong></p>
 <button id="add-item" type="button">Add field notebook</button></main><script>
 let pending = 0;
-let nextRequest = 0;
-let latestPainted = 0;
 async function addItem() {
-  const requestId = ++nextRequest;
   pending += 1;
   document.querySelector('#cart').dataset.pending = String(pending);
   try {
     const response = await fetch('/api/cart/add', { method: 'POST' });
     const data = await response.json();
-    if (requestId > latestPainted) {
-      latestPainted = requestId;
-      document.querySelector('#cart-badge').textContent = String(data.count);
-    }
+    document.querySelector('#cart-badge').textContent = String(data.count);
   } finally {
     pending -= 1;
     document.querySelector('#cart').dataset.pending = String(pending);
@@ -50,7 +45,10 @@ document.querySelector('#add-item').addEventListener('click', addItem);
 
 function inventoryCheck(snapshot) {
   return new Promise((resolve, reject) => {
-    const iterations = snapshot % 2 === 0 ? 44000 : 45000;
+    inventoryCheckNumber += 1;
+    const cyclePosition = inventoryCheckNumber % 6;
+    const requiresFullVerification = cyclePosition === 2 || cyclePosition === 0;
+    const iterations = requiresFullVerification ? 120000 : 12000;
     crypto.pbkdf2(`field-notebook-${snapshot}`, 'agent-shop-inventory', iterations, 32, 'sha256', (error) => {
       if (error) reject(error); else resolve();
     });
