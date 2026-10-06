@@ -52,7 +52,7 @@ const orderPage = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Agent Shop — Order</title></head>
 <body><main><h1>Order</h1><p>Estimated delivery: <strong id="delivery-date"></strong></p></main><script>
 const order = { deliveryDate: '2026-10-15' };
-document.querySelector('#delivery-date').textContent = new Date(order.deliveryDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+document.querySelector('#delivery-date').textContent = new Date(order.deliveryDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 </script></body></html>`;
 
 function inventoryCheck(snapshot) {

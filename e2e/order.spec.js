@@ -2,7 +2,13 @@
 
 const { test, expect } = require('@playwright/test');
 
-test('order shows the estimated delivery date', async ({ page }) => {
-  await page.goto('/order');
-  await expect(page.locator('#delivery-date')).toHaveText('October 14, 2026');
-});
+for (const timezoneId of ['America/Santiago', 'UTC']) {
+  test.describe(timezoneId, () => {
+    test.use({ timezoneId });
+
+    test(`order shows the estimated delivery date in ${timezoneId}`, async ({ page }) => {
+      await page.goto('/order');
+      await expect(page.locator('#delivery-date')).toHaveText('October 15, 2026');
+    });
+  });
+}
