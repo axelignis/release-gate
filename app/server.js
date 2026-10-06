@@ -48,6 +48,13 @@ async function addItem() {
 document.querySelector('#add-item').addEventListener('click', addItem);
 </script></body></html>`;
 
+const orderPage = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Agent Shop — Order</title></head>
+<body><main><h1>Order</h1><p>Estimated delivery: <strong id="delivery-date"></strong></p></main><script>
+const order = { deliveryDate: '2026-10-15' };
+document.querySelector('#delivery-date').textContent = new Date(order.deliveryDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+</script></body></html>`;
+
 function inventoryCheck(snapshot) {
   return new Promise((resolve, reject) => {
     const iterations = snapshot % 2 === 0 ? 44000 : 45000;
@@ -89,6 +96,10 @@ const server = http.createServer(async (request, response) => {
       const snapshot = cartCount;
       await inventoryCheck(snapshot);
       return json(response, 200, { count: snapshot });
+    }
+    if (request.method === 'GET' && request.url === '/order') {
+      response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+      return response.end(orderPage);
     }
     response.writeHead(404).end('Not found');
   } catch (error) {
